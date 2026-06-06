@@ -11,7 +11,6 @@ import Navbar from "@/components/sections/Navbar";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import PageTransition from "@/components/ui/PageTransition";
 import FinalCta from "@/components/sections/FinalCta";
-import TiltCard from "@/components/ui/TiltCard";
 import MagneticButton from "@/components/ui/MagneticButton";
 import VrHeadset3D from "@/components/visuals/VrHeadset3D";
 

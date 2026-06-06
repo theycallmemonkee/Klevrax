@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
-import { BookOpen, Flame, HelpCircle, Users2, ShieldAlert } from "lucide-react";
+import { BookOpen, Flame } from "lucide-react";
 
 import NeuralBackground from "@/components/visuals/NeuralBackground";
 import Navbar from "@/components/sections/Navbar";

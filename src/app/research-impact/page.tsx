@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Lenis from "lenis";
-import { Flame, Landmark, BookOpen, AlertCircle, ArrowRight } from "lucide-react";
+import { Flame, Landmark, BookOpen, ArrowRight } from "lucide-react";
 
 import NeuralBackground from "@/components/visuals/NeuralBackground";
 import Navbar from "@/components/sections/Navbar";
