@@ -67,15 +67,7 @@ const features = [
 
 export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-
-  const handleSelect = (feat: typeof features[0]) => {
-    onComponentClick({
-      name: nameMap[feat.id] || feat.id,
-      title: feat.title,
-      feature: feat.feature,
-      description: feat.description,
-    });
-  };
+  const [activeIdx, setActiveIdx] = useState(0);
 
   // Map to align with klevrax-vr/page.tsx selectedComp name fields
   const nameMap: Record<string, string> = {
@@ -87,8 +79,43 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
     therapy_engine: "therapy_engine",
   };
 
+  const handleSelect = (feat: typeof features[0]) => {
+    onComponentClick({
+      name: nameMap[feat.id] || feat.id,
+      title: feat.title,
+      feature: feat.feature,
+      description: feat.description,
+    });
+  };
+
+  const handleNext = () => {
+    const nextIdx = (activeIdx + 1) % features.length;
+    setActiveIdx(nextIdx);
+    handleSelect(features[nextIdx]);
+  };
+
+  const handlePrev = () => {
+    const prevIdx = (activeIdx - 1 + features.length) % features.length;
+    setActiveIdx(prevIdx);
+    handleSelect(features[prevIdx]);
+  };
+
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      handleNext();
+    } else if (info.offset.x > swipeThreshold) {
+      handlePrev();
+    }
+  };
+
+  const selectMobileIdx = (idx: number) => {
+    setActiveIdx(idx);
+    handleSelect(features[idx]);
+  };
+
   return (
-    <div className="w-full min-h-[600px] py-10 relative flex items-center justify-center select-none overflow-visible">
+    <div className="w-full min-h-[450px] lg:min-h-[600px] py-6 lg:py-10 relative flex flex-col items-center justify-center select-none overflow-visible">
       {/* 1. Main Connecting Lines Layer (Desktop Only) */}
       <div className="absolute inset-0 z-0 hidden lg:block pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,8 +180,8 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
       {/* 2. Interactive Page Layout Grid */}
       <div className="max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
         
-        {/* Left Column: Features 1-3 */}
-        <div className="lg:col-span-4 flex flex-col gap-6 order-2 lg:order-1">
+        {/* Left Column: Features 1-3 (Hidden on mobile) */}
+        <div className="hidden lg:flex lg:col-span-4 flex-col gap-6 order-2 lg:order-1">
           {features.slice(0, 3).map((feat) => (
             <motion.div
               key={feat.id}
@@ -177,8 +204,8 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
           ))}
         </div>
 
-        {/* Center: Premium VR Headset Vector silhouette */}
-        <div className="lg:col-span-4 flex flex-col items-center justify-center relative min-h-[350px] order-1 lg:order-2">
+        {/* Center: Premium VR Headset Vector silhouette (Hidden on mobile) */}
+        <div className="hidden lg:flex lg:col-span-4 flex-col items-center justify-center relative min-h-[350px] order-1 lg:order-2">
           {/* Radial glow background */}
           <div className="absolute w-[240px] h-[240px] rounded-full bg-primary/20 filter blur-[60px] animate-pulse-slow pointer-events-none" />
 
@@ -262,8 +289,8 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
           </div>
         </div>
 
-        {/* Right Column: Features 4-6 */}
-        <div className="lg:col-span-4 flex flex-col gap-6 order-3">
+        {/* Right Column: Features 4-6 (Hidden on mobile) */}
+        <div className="hidden lg:flex lg:col-span-4 flex-col gap-6 order-3">
           {features.slice(3, 6).map((feat) => (
             <motion.div
               key={feat.id}
@@ -286,6 +313,87 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
           ))}
         </div>
 
+      </div>
+
+      {/* 3. Mobile Swipeable Carousel (visible on viewports < lg) */}
+      <div className="lg:hidden w-full px-4 flex flex-col items-center mt-4 overflow-visible">
+        <div className="w-full max-w-sm relative">
+          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10 opacity-70 blur-xl pointer-events-none" />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIdx}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={handleDragEnd}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="glass-card w-full p-8 rounded-3xl border border-accent/25 bg-accent-muted/10 shadow-lg shadow-accent/5 flex flex-col justify-between cursor-grab active:cursor-grabbing min-h-[290px] relative z-10"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="w-11 h-11 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/25 shadow-md">
+                    {features[activeIdx].icon}
+                  </div>
+                  <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-display">
+                    {activeIdx + 1} / {features.length}
+                  </span>
+                </div>
+
+                <div className="mb-3.5">
+                  <span className="text-[9px] font-bold text-accent/80 block uppercase tracking-wider mb-1">
+                    {features[activeIdx].feature}
+                  </span>
+                  <h4 className="text-lg font-bold font-display text-white">
+                    {features[activeIdx].title}
+                  </h4>
+                </div>
+
+                <p className="text-white/70 text-xs leading-relaxed font-normal">
+                  {features[activeIdx].description}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3.5 border-t border-white/5 flex items-center justify-between text-[9px] text-white/45 tracking-wider uppercase font-display">
+                <span>Swipe to explore</span>
+                <span className="text-accent font-semibold">Interactive</span>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Carousel Navigation Indicators */}
+        <div className="flex items-center gap-6 mt-6 relative z-10">
+          <button
+            onClick={handlePrev}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 active:scale-90 transition-all cursor-pointer"
+            aria-label="Previous component"
+          >
+            ←
+          </button>
+          
+          <div className="flex gap-2">
+            {features.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => selectMobileIdx(idx)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeIdx === idx ? "bg-accent w-4" : "bg-white/20 hover:bg-white/35"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 active:scale-90 transition-all cursor-pointer"
+            aria-label="Next component"
+          >
+            →
+          </button>
+        </div>
       </div>
     </div>
   );

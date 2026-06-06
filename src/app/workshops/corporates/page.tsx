@@ -84,7 +84,7 @@ export default function CorporatesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {corporateOfferings.map((off) => (
                 <TiltCard key={off.title} maxTilt={6}>
-                  <div className="glass-card p-8 rounded-2xl border border-white/5 bg-[#120A27]/25 hover:border-accent/15 transition-all duration-300">
+                  <div className="glass-card p-6 sm:p-8 rounded-2xl border border-white/5 bg-[#120A27]/25 hover:border-accent/15 transition-all duration-300">
                     <h4 className="text-lg font-bold font-display text-white mb-3">{off.title}</h4>
                     <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{off.desc}</p>
                   </div>

@@ -208,9 +208,9 @@ export default function WorkshopsPage() {
             {targetAudiences.map((audience) => (
               <motion.div key={audience.title} variants={cardItemVariants}>
                 <TiltCard maxTilt={8} className="h-full">
-                  <div className="glass-card p-8 rounded-2xl h-full flex flex-col justify-between border border-white/5 bg-[#120A27]/20 hover:shadow-[0_20px_40px_rgba(124,58,237,0.15)] transition-all duration-300">
+                  <div className="glass-card p-6 sm:p-8 rounded-2xl h-full flex flex-col justify-between border border-white/5 bg-[#120A27]/20 hover:shadow-[0_20px_40px_rgba(124,58,237,0.15)] transition-all duration-300">
                     <div>
-                      <div className="w-12 h-12 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/20 mb-6">
+                      <div className="w-12 h-12 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/20 mb-5 sm:mb-6">
                         {audience.icon}
                       </div>
                       <h4 className="text-lg font-semibold font-display text-white mb-3">
@@ -294,10 +294,10 @@ export default function WorkshopsPage() {
 
                     <div className={`w-full md:w-[45%] ml-16 md:ml-0 ${isEven ? "md:text-right" : "md:text-left md:order-2"}`}>
                       <motion.div
-                        initial={{ opacity: 0, x: isEven ? -40 : 40 }}
-                        animate={isTimelineInView ? { opacity: 1, x: 0 } : {}}
+                        initial={{ opacity: 0, y: 25 }}
+                        animate={isTimelineInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, delay: idx * 0.15 }}
-                        className="glass-card p-6 rounded-2xl border border-white/5 bg-[#120A27]/25"
+                        className="glass-card p-5 sm:p-6 rounded-2xl border border-white/5 bg-[#120A27]/25"
                       >
                         <h4 className="text-lg font-semibold font-display text-white mb-2">{step.title}</h4>
                         <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{step.description}</p>
@@ -327,7 +327,7 @@ export default function WorkshopsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="glass-card p-8 rounded-2xl border border-white/5 hover:border-accent/30 text-center flex flex-col items-center relative group"
+                className="glass-card p-6 sm:p-8 rounded-2xl border border-white/5 hover:border-accent/30 text-center flex flex-col items-center relative group"
               >
                 {/* Accent top gradient bar */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl" />

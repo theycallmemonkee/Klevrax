@@ -137,13 +137,13 @@ export default function VrPlatformPage() {
           <div className="glow-orb glow-orb-secondary w-[500px] h-[500px] bottom-[10%] right-[-10%] animate-drift-delayed" />
           
           <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center">
-            {/* Selected Component Information Panel - Dashboard Style */}
+            {/* Selected Component Information Panel - Dashboard Style (hidden on mobile) */}
             <motion.div
               key={selectedComp.name}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="glass-card p-6 rounded-2xl w-full max-w-2xl border border-accent/20 bg-accent-muted/10 shadow-lg shadow-accent/5 mb-12 animate-pulse-slow"
+              className="hidden lg:block glass-card p-6 rounded-2xl w-full max-w-2xl border border-accent/20 bg-accent-muted/10 shadow-lg shadow-accent/5 mb-12 animate-pulse-slow"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3 mb-3">
                 <span className="text-[10px] font-bold text-accent uppercase tracking-widest">
@@ -256,7 +256,8 @@ export default function VrPlatformPage() {
               </h3>
             </div>
 
-            <div className="glass-card rounded-2xl border border-white/10 bg-dark/50 overflow-hidden max-w-4xl mx-auto">
+            {/* Desktop Comparison Table (Hidden on Mobile) */}
+            <div className="hidden md:block glass-card rounded-2xl border border-white/10 bg-dark/50 overflow-hidden max-w-4xl mx-auto">
               <div className="grid grid-cols-12 border-b border-white/10 bg-white/5 py-4 px-6 text-xs font-bold text-white uppercase tracking-wider font-display">
                 <div className="col-span-4 md:col-span-3">Therapeutic Aspect</div>
                 <div className="col-span-4 md:col-span-4">Traditional Therapy</div>
@@ -272,6 +273,35 @@ export default function VrPlatformPage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile Comparison Cards (Hidden on Desktop) */}
+            <div className="md:hidden space-y-4">
+              {comparisonRows.map((row) => (
+                <div key={row.aspect} className="glass-card p-5 rounded-2xl border border-white/5 bg-[#120A27]/25 space-y-3">
+                  <div className="text-sm font-bold text-white font-display border-b border-white/5 pb-2">
+                    {row.aspect}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest block mb-1">
+                        Traditional
+                      </span>
+                      <p className="text-white/60 leading-relaxed font-normal">
+                        {row.traditional}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-accent uppercase tracking-widest block mb-1">
+                        KlevraX VR
+                      </span>
+                      <p className="text-accent/90 font-semibold leading-relaxed">
+                        {row.vr}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

@@ -38,19 +38,19 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden z-[1]">
+    <section className="relative min-h-screen py-24 sm:py-32 lg:py-0 lg:h-screen lg:min-h-[700px] flex items-center justify-center overflow-hidden z-[1]">
       {/* Background Soft Glows */}
       <div className="glow-orb glow-orb-primary w-[550px] h-[550px] top-[5%] left-[-15%] animate-drift" />
       <div className="glow-orb glow-orb-secondary w-[450px] h-[450px] bottom-[10%] right-[-10%] animate-drift-delayed" />
 
-      <div className="max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+      <div className="max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center relative z-10">
         
         {/* Left Column: Heading Copy */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="lg:col-span-7 flex flex-col items-start text-left"
+          className="lg:col-span-7 flex flex-col items-start text-left pt-6 sm:pt-0"
         >
           {/* Top Tagline */}
           <motion.div
@@ -125,9 +125,9 @@ export default function Hero() {
         </motion.div>
 
         {/* Right Column: 3D Particle Brain */}
-        <div className="lg:col-span-5 relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center">
+        <div className="lg:col-span-5 relative w-full h-[280px] sm:h-[380px] md:h-[500px] lg:h-[600px] flex items-center justify-center">
           {/* Inner Backplate Glow */}
-          <div className="absolute w-[280px] height-[280px] rounded-full bg-primary/25 filter blur-[60px] animate-pulse-slow pointer-events-none" />
+          <div className="absolute w-[280px] h-[280px] rounded-full bg-primary/25 filter blur-[60px] animate-pulse-slow pointer-events-none" />
           
           <ErrorBoundary name="Brain Model">
             <BrainCanvas3D />

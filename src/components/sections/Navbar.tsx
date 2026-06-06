@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../ui/Logo";
 import MagneticButton from "../ui/MagneticButton";
 
@@ -91,6 +92,17 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -101,7 +113,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 py-4 ${
-        scrolled ? "px-4 md:px-8" : "px-6 md:px-12"
+        scrolled ? "px-4 lg:px-8" : "px-4 lg:px-12"
       }`}
     >
       <div
@@ -214,90 +226,131 @@ export default function Navbar() {
           </MagneticButton>
         </div>
 
-        {/* Mobile Hamburger toggle */}
+        {/* Mobile Hamburger toggle (morphing lines via motion) */}
         <button
-          className="lg:hidden w-10 h-10 rounded-full glass-card border-white/10 flex items-center justify-center text-white cursor-pointer hover:bg-white/5"
+          className="lg:hidden w-10 h-10 rounded-full glass-card border-white/10 flex flex-col items-center justify-center gap-1.5 text-white cursor-pointer hover:bg-white/5 relative z-50 transition-all duration-300"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle Navigation Menu"
         >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <motion.span
+            animate={mobileOpen ? { rotate: 45, y: 7.5 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-5 h-[1.5px] bg-white rounded-full block"
+          />
+          <motion.span
+            animate={mobileOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="w-5 h-[1.5px] bg-white rounded-full block"
+          />
+          <motion.span
+            animate={mobileOpen ? { rotate: -45, y: -7.5 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-5 h-[1.5px] bg-white rounded-full block"
+          />
         </button>
       </div>
 
-      {/* Mobile Slide Drawer Menu */}
-      <div
-        className={`fixed inset-0 z-40 bg-dark/95 backdrop-blur-lg lg:hidden transition-transform duration-500 flex flex-col pt-24 px-6 pb-8 ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex-1 overflow-y-auto space-y-6 scrollbar-none pr-2">
-          {navigationStructure.map((cat) => {
-            if (!cat.links) {
-              const isActive = pathname === cat.href;
-              return (
-                <Link
-                  key={cat.name}
-                  href={cat.href}
-                  className={`block text-lg font-bold font-display tracking-wide uppercase ${
-                    isActive ? "text-accent" : "text-white"
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              );
-            }
-
-            // Accordion style link listing
-            const isAccordionOpen = activeDropdown === cat.name;
-
-            return (
-              <div key={cat.name} className="space-y-3">
-                <button
-                  onClick={() => setActiveDropdown(isAccordionOpen ? null : cat.name)}
-                  className="w-full flex items-center justify-between text-lg font-bold font-display tracking-wide uppercase text-white cursor-pointer"
-                >
-                  {cat.name}
-                  <ChevronDown className="w-5 h-5 transition-transform" style={{ transform: isAccordionOpen ? "rotate(180deg)" : "rotate(0)" }} />
-                </button>
-
-                <div
-                  className={`pl-4 space-y-3 overflow-hidden transition-all duration-300 ${
-                    isAccordionOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  {cat.links.map((link) => {
-                    const isExternal = link.href.startsWith("http");
-                    return (
+      {/* Mobile Glassmorphic Drawer Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100vh" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-0 top-0 z-40 bg-dark/92 backdrop-blur-2xl lg:hidden flex flex-col pt-28 px-6 pb-8 border-b border-white/10 overflow-hidden"
+          >
+            <div className="flex-1 overflow-y-auto space-y-6 scrollbar-none pr-2 py-4">
+              {navigationStructure.map((cat, idx) => {
+                if (!cat.links) {
+                  const isActive = pathname === cat.href;
+                  return (
+                    <motion.div
+                      key={cat.name}
+                      initial={{ opacity: 0, x: -15 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 + 0.1 }}
+                    >
                       <Link
-                        key={link.name}
-                        href={link.href}
-                        target={isExternal ? "_blank" : undefined}
-                        rel={isExternal ? "noopener noreferrer" : undefined}
-                        className={`block text-xs font-semibold uppercase tracking-wider py-1 ${
-                          pathname === link.href ? "text-accent" : "text-white/60"
+                        href={cat.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`block text-lg font-bold font-display tracking-wide uppercase ${
+                          isActive ? "text-accent" : "text-white hover:text-accent transition-colors"
                         }`}
                       >
-                        {link.name}
+                        {cat.name}
                       </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                    </motion.div>
+                  );
+                }
 
-        {/* Mobile CTA */}
-        <div className="pt-6 border-t border-white/5 flex flex-col gap-4">
-          <a
-            href="https://calendly.com/klevraxprivatelimited01/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-3.5 rounded-full text-xs font-bold text-center text-white bg-primary hover:bg-[#6D28D9] border border-primary/20 shadow-md uppercase tracking-wider"
-          >
-            Book Demo Session
-          </a>
-        </div>
-      </div>
+                // Accordion style link listing
+                const isAccordionOpen = activeDropdown === cat.name;
+
+                return (
+                  <motion.div
+                    key={cat.name}
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 + 0.1 }}
+                    className="space-y-3"
+                  >
+                    <button
+                      onClick={() => setActiveDropdown(isAccordionOpen ? null : cat.name)}
+                      className="w-full flex items-center justify-between text-lg font-bold font-display tracking-wide uppercase text-white cursor-pointer hover:text-accent transition-colors"
+                    >
+                      {cat.name}
+                      <ChevronDown className="w-5 h-5 transition-transform" style={{ transform: isAccordionOpen ? "rotate(180deg)" : "rotate(0)" }} />
+                    </button>
+
+                    <div
+                      className={`pl-4 space-y-3.5 overflow-hidden transition-all duration-300 ${
+                        isAccordionOpen ? "max-h-[300px] opacity-100 mt-2" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {cat.links.map((link) => {
+                        const isExternal = link.href.startsWith("http");
+                        return (
+                          <Link
+                            key={link.name}
+                            href={link.href}
+                            onClick={() => setMobileOpen(false)}
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
+                            className={`block text-xs font-semibold uppercase tracking-wider py-1.5 ${
+                              pathname === link.href ? "text-accent" : "text-white/60 hover:text-white transition-colors"
+                            }`}
+                          >
+                            {link.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Mobile CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: navigationStructure.length * 0.05 + 0.15 }}
+              className="pt-6 border-t border-white/5 flex flex-col gap-4"
+            >
+              <a
+                href="https://calendly.com/klevraxprivatelimited01/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="w-full py-4 rounded-full text-xs font-bold text-center text-white bg-primary hover:bg-[#6D28D9] border border-primary/20 shadow-md uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-95"
+              >
+                Book Demo Session
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

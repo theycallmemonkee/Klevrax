@@ -129,6 +129,9 @@ export default function AboutPage() {
               {/* Horizontal Line Connector (visible on desktop) */}
               <div className="absolute left-0 right-0 top-7 -translate-y-1/2 h-[2px] bg-white/10 hidden md:block" />
               
+              {/* Vertical Line Connector (visible on mobile) */}
+              <div className="absolute left-[27px] top-[28px] bottom-[28px] w-[2px] bg-white/10 block md:hidden" />
+
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
                 {roadmapItems.map((item, idx) => (
                   <motion.div
@@ -137,16 +140,16 @@ export default function AboutPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: idx * 0.15 }}
-                    className="relative flex flex-col items-center md:items-start group"
+                    className="relative flex flex-row items-start gap-6 md:flex-col md:items-start md:gap-0 group"
                   >
                     {/* Year Badge Node */}
-                    <div className="w-14 h-14 rounded-full border border-accent bg-[#0f0820] flex items-center justify-center font-bold text-accent text-sm shadow-[0_0_15px_rgba(167,139,250,0.25)] relative mb-8 group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-14 h-14 rounded-full border border-accent bg-[#0f0820] flex items-center justify-center font-bold text-accent text-sm shadow-[0_0_15px_rgba(167,139,250,0.25)] relative shrink-0 z-10 md:mb-8 group-hover:scale-110 transition-transform duration-300">
                       <span>{item.year}</span>
                       <div className="absolute inset-0 rounded-full bg-accent/5 animate-ping pointer-events-none" />
                     </div>
 
                     {/* Card Content */}
-                    <div className="glass-card p-6 rounded-2xl border border-white/5 bg-[#120A27]/25 w-full hover:border-accent/20 transition-all duration-300">
+                    <div className="glass-card p-5 sm:p-6 rounded-2xl border border-white/5 bg-[#120A27]/25 w-full hover:border-accent/20 transition-all duration-300">
                       <h4 className="text-base font-bold font-display text-white mb-2">{item.title}</h4>
                       <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
                     </div>

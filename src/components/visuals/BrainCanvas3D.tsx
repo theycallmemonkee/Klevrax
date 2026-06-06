@@ -30,7 +30,10 @@ export default function BrainCanvas3D() {
     let height = (canvas.height = canvas.clientHeight);
 
     const particles: Particle[] = [];
-    const particleCount = 200;
+    let particleCount = 200;
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      particleCount = 80; // Slashes computational load by ~80% on mobile
+    }
     
     // Mouse interaction coordinates
     const mouse = { x: -1000, y: -1000, active: false };
@@ -128,6 +131,11 @@ export default function BrainCanvas3D() {
     const handleResize = () => {
       width = canvas.width = canvas.clientWidth;
       height = canvas.height = canvas.clientHeight;
+      if (window.innerWidth < 768) {
+        particleCount = 80;
+      } else {
+        particleCount = 200;
+      }
       initParticles();
     };
     window.addEventListener("resize", handleResize);
