@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
-import { GraduationCap, Brain, HelpCircle, FileText, CheckCircle } from "lucide-react";
 
 import NeuralBackground from "@/components/visuals/NeuralBackground";
 import Navbar from "@/components/sections/Navbar";

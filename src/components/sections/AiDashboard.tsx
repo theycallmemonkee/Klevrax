@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { LineChart, BarChart2, Activity, User, ShieldAlert, Sparkles } from "lucide-react";
+import { LineChart, Activity, User, Sparkles } from "lucide-react";
 
 export default function AiDashboard() {
   const containerRef = useRef<HTMLDivElement>(null);

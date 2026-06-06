@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { ClipboardList, BrainCircuit, Eye, BarChart3 } from "lucide-react";
 
 interface Step {

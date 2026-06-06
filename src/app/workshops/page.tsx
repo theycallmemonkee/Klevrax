@@ -3,8 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Lenis from "lenis";
-import { School, GraduationCap, Building2, Users2, ShieldAlert } from "lucide-react";
-import Link from "next/link";
+import { School, GraduationCap, Building2, Users2 } from "lucide-react";
 
 import NeuralBackground from "@/components/visuals/NeuralBackground";
 import Navbar from "@/components/sections/Navbar";
