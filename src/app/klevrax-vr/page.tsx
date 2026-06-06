@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Lenis from "lenis";
 import { Heart, Play, Eye, BarChart } from "lucide-react";
@@ -73,17 +73,7 @@ export default function VrPlatformPage() {
     description: "Dual medical-grade micro-OLED visual lenses displaying ultra-high definition, flicker-free light fields. Engineered to synchronize neural frequency patterns.",
   });
 
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start center", "end center"],
-  });
 
-  const pathLength = useSpring(scrollYProgress, {
-    stiffness: 85,
-    damping: 25,
-    restDelta: 0.001,
-  });
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -193,11 +183,11 @@ export default function VrPlatformPage() {
         </section>
 
         {/* How VR Therapy Works Timeline */}
-        <section ref={timelineRef} className="py-24 bg-[#0F0820] relative">
+        <section className="py-20 bg-[#0F0820] relative">
           <div className="glow-orb glow-orb-secondary w-[500px] h-[500px] bottom-[10%] left-[-10%]" />
 
           <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-20">
+            <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-xs font-semibold text-accent tracking-wider uppercase font-display mb-3">
                 The Session Loop
               </h2>
@@ -206,40 +196,32 @@ export default function VrPlatformPage() {
               </h3>
             </div>
 
-            <div className="relative max-w-4xl mx-auto">
-              <div className="absolute left-[24px] md:left-1/2 top-0 bottom-0 -translate-x-[1.5px] w-[3px] bg-white/5">
-                <motion.div
-                  style={{
-                    scaleY: pathLength,
-                    transformOrigin: "top",
-                  }}
-                  className="absolute inset-0 bg-gradient-to-b from-primary to-accent shadow-[0_0_12px_#7C3AED] rounded-full"
-                />
-              </div>
-
-              <div className="space-y-16">
-                {pathSteps.map((step, idx) => {
-                  const isEven = idx % 2 === 0;
-
-                  return (
-                    <div key={step.number} className="flex flex-col md:flex-row items-start justify-between relative">
-                      <div className="absolute left-[24px] md:left-1/2 -translate-x-1/2 flex items-center justify-center z-15">
-                        <div className="w-12 h-12 rounded-full glass-card border-accent/20 bg-dark flex items-center justify-center shadow-md">
-                          {step.icon}
-                        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {pathSteps.map((step) => (
+                <div
+                  key={step.number}
+                  className="glass-card p-6 sm:p-8 rounded-2xl border border-white/5 bg-[#120A27]/20 hover:border-accent/30 shadow-[0_0_15px_rgba(124,58,237,0.12)] transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="text-3xl font-bold font-display text-accent-muted block">
+                        {step.number}
+                      </span>
+                      <div className="w-10 h-10 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/20">
+                        {step.icon}
                       </div>
-
-                      <div className={`w-full md:w-[42%] ml-16 md:ml-0 ${isEven ? "md:text-right" : "md:text-left md:order-2"}`}>
-                        <span className="text-3xl font-bold font-display text-accent-muted block mb-1">{step.number}</span>
-                        <h4 className="text-lg font-semibold font-display text-white mb-2">{step.title}</h4>
-                        <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{step.desc}</p>
-                      </div>
-
-                      <div className="hidden md:block md:w-[42%]" />
                     </div>
-                  );
-                })}
-              </div>
+
+                    <h4 className="text-lg font-semibold font-display text-white mb-3">
+                      {step.title}
+                    </h4>
+
+                    <p className="text-white/60 text-xs sm:text-sm leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

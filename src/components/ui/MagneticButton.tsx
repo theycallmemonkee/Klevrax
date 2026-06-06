@@ -9,6 +9,7 @@ interface MagneticButtonProps {
   strength?: number; // Attraction strength (0 to 1)
   className?: string;
   as?: React.ElementType;
+  fullWidth?: boolean;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -20,6 +21,7 @@ export default function MagneticButton({
   strength = 0.35,
   className = "",
   as = "button",
+  fullWidth = false,
   ...props
 }: MagneticButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,6 +31,12 @@ export default function MagneticButton({
     const container = containerRef.current;
     const button = buttonRef.current;
     if (!container || !button) return;
+
+    // Disable on small viewports and touch-only devices
+    const isTouchOrSmall = window.matchMedia("(max-width: 1024px)").matches || 
+                           ('ontouchstart' in window) || 
+                           (navigator.maxTouchPoints > 0);
+    if (isTouchOrSmall) return;
 
     // Use gsap.quickTo for high-performance updates
     const xTo = gsap.quickTo(button, "x", { duration: 0.8, ease: "power3.out" });
@@ -71,11 +79,14 @@ export default function MagneticButton({
   const Component = as || "button";
 
   return (
-    <div ref={containerRef} className="inline-block p-4">
+    <div 
+      ref={containerRef} 
+      className={`${fullWidth ? "w-full block p-0" : "inline-block p-4"}`}
+    >
       <Component
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ref={buttonRef as any}
-        className={`relative cursor-pointer transition-shadow duration-300 ${className}`}
+        className={`relative cursor-pointer transition-shadow duration-300 ${fullWidth ? "w-full flex items-center justify-center text-center" : ""} ${className}`}
         {...props}
       >
         {children}

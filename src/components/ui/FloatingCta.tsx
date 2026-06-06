@@ -5,7 +5,7 @@ import MagneticButton from "./MagneticButton";
 
 export default function FloatingCta() {
   return (
-    <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
+    <div className="fixed bottom-6 right-6 z-50 pointer-events-auto hidden md:block">
       <div className="relative group">
         {/* Soft pulsing purple glow behind the button */}
         <div className="absolute inset-0.5 rounded-full bg-gradient-to-r from-primary to-accent opacity-70 blur-md group-hover:opacity-100 group-hover:blur-xl transition duration-500" />

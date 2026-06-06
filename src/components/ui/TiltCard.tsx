@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 interface TiltCardProps {
   children: React.ReactNode;
@@ -20,8 +20,22 @@ export default function TiltCard({
   const [rotateY, setRotateY] = useState(0);
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  useEffect(() => {
+    const checkDisable = () => {
+      const isTouchOrSmall = window.matchMedia("(max-width: 1024px)").matches || 
+                             ('ontouchstart' in window) || 
+                             (navigator.maxTouchPoints > 0);
+      setIsDisabled(isTouchOrSmall);
+    };
+    checkDisable();
+    window.addEventListener("resize", checkDisable);
+    return () => window.removeEventListener("resize", checkDisable);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDisabled) return;
     const card = cardRef.current;
     if (!card) return;
 
@@ -46,6 +60,7 @@ export default function TiltCard({
   };
 
   const handleMouseEnter = () => {
+    if (isDisabled) return;
     setIsHovered(true);
   };
 
@@ -62,21 +77,21 @@ export default function TiltCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        perspective: `${perspective}px`,
+        perspective: isDisabled ? undefined : `${perspective}px`,
       }}
       className={`relative transition-all duration-300 ease-out select-none ${className}`}
     >
       <div
         className="w-full h-full relative rounded-2xl transition-transform duration-200 ease-out overflow-hidden"
         style={{
-          transform: isHovered
+          transform: !isDisabled && isHovered
             ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`
             : "rotateX(0deg) rotateY(0deg) scale(1)",
-          transformStyle: "preserve-3d",
+          transformStyle: isDisabled ? undefined : "preserve-3d",
         }}
       >
         {/* Children content wrapper */}
-        <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}>
+        <div style={{ transform: isDisabled ? undefined : "translateZ(30px)", transformStyle: isDisabled ? undefined : "preserve-3d" }}>
           {children}
         </div>
 
@@ -84,7 +99,7 @@ export default function TiltCard({
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300 mix-blend-overlay"
           style={{
-            opacity: isHovered ? 0.45 : 0,
+            opacity: !isDisabled && isHovered ? 0.45 : 0,
             background: `radial-gradient(circle 200px at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, 0.4), transparent)`,
           }}
         />

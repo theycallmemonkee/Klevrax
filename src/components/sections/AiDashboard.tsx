@@ -54,10 +54,10 @@ export default function AiDashboard() {
           </p>
         </div>
 
-        {/* Dashboard Preview Interface */}
+        {/* Dashboard Preview Interface (Desktop) */}
         <div
           ref={containerRef}
-          className="glass-card rounded-2xl border border-white/10 bg-dark/70 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden w-full max-w-5xl mx-auto"
+          className="hidden lg:block glass-card rounded-2xl border border-white/10 bg-dark/70 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden w-full max-w-5xl mx-auto"
         >
           {/* Dashboard Window Header (Mac style) */}
           <div className="flex items-center justify-between border-b border-white/5 bg-white/3 py-3 px-6 select-none">
@@ -319,6 +319,132 @@ export default function AiDashboard() {
 
             </div>
 
+          </div>
+        </div>
+
+        {/* Mobile Premium Diagnostics Stack (Visible on Mobile/Tablet) */}
+        <div className="lg:hidden flex flex-col gap-6 w-full max-w-xl mx-auto">
+          {/* Card 1: Session Status */}
+          <div className="glass-card rounded-2xl border border-white/5 bg-[#120A27]/25 p-5 flex items-center justify-between shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-accent-muted flex items-center justify-center font-bold text-accent text-sm">
+                JD
+              </div>
+              <div>
+                <h5 className="text-sm font-semibold text-white">Jonathan Doe</h5>
+                <span className="text-[10px] text-white/40 block">Patient Profile #092</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> HRV Connected
+              </span>
+              <span className="text-[9px] text-white/40">Session 14 / 20</span>
+            </div>
+          </div>
+
+          {/* Card 2: Biosignals Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Mood Score */}
+            <div className="glass-card rounded-xl border border-white/5 bg-[#120A27]/20 p-5 flex flex-col justify-between shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+              <div>
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Mood Score</span>
+                <h6 className="text-3xl font-bold text-white font-display">84%</h6>
+              </div>
+              <span className="text-[10px] text-emerald-500 font-medium mt-3 block">+12.4% vs Baseline</span>
+            </div>
+
+            {/* Stress Index */}
+            <div className="glass-card rounded-xl border border-white/5 bg-[#120A27]/20 p-5 flex flex-col justify-between shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+              <div>
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Stress Index</span>
+                <h6 className="text-3xl font-bold text-white font-display">34%</h6>
+              </div>
+              <span className="text-[10px] text-accent font-medium mt-3 block">Optimum HRV Resonant</span>
+            </div>
+
+            {/* Session Recovery */}
+            <div className="glass-card rounded-xl border border-white/5 bg-[#120A27]/20 p-5 flex flex-col justify-between shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+              <div>
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block mb-1">Session Recovery</span>
+                <h6 className="text-3xl font-bold text-white font-display">Optimal</h6>
+              </div>
+              <span className="text-[10px] text-emerald-500 font-medium mt-3 block">Alpha Waves Dominant</span>
+            </div>
+          </div>
+
+          {/* Card 3: Mood Analysis Trend Chart */}
+          <div className="glass-card rounded-2xl border border-white/5 bg-[#120A27]/25 p-6 shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+            <div className="flex items-center justify-between mb-4">
+              <h6 className="text-xs font-semibold text-white/80">Cognitive Balance & Mood Analysis</h6>
+              <span className="text-[10px] text-white/30">14-Day Cycle</span>
+            </div>
+            
+            {/* Glowing SVG Chart */}
+            <div className="h-32 relative flex items-end">
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="none">
+                <motion.path
+                  d="M 0 80 Q 50 60, 100 45 T 200 30 T 300 15 L 300 100 L 0 100 Z"
+                  fill="url(#chartGlowMobile)"
+                  variants={pathVariants}
+                  initial="hidden"
+                  animate={inView ? "visible" : "hidden"}
+                />
+                <motion.path
+                  d="M 0 80 Q 50 60, 100 45 T 200 30 T 300 15"
+                  fill="none"
+                  stroke="#A78BFA"
+                  strokeWidth="2.5"
+                  variants={pathVariants}
+                  initial="hidden"
+                  animate={inView ? "visible" : "hidden"}
+                />
+                <defs>
+                  <linearGradient id="chartGlowMobile" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              
+              <div className="absolute inset-x-0 bottom-0 flex justify-between text-[8px] text-white/20 pt-1 border-t border-white/5">
+                <span>Day 1 (Assessment)</span>
+                <span>Day 7 (Midway)</span>
+                <span>Day 14 (Current)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Progress Milestones */}
+          <div className="glass-card rounded-2xl border border-white/5 bg-[#120A27]/25 p-6 shadow-[0_0_15px_rgba(124,58,237,0.12)]">
+            <h6 className="text-xs font-semibold text-white/80 mb-5 pb-2 border-b border-white/5">Patient Recovery Journey</h6>
+            
+            <div className="space-y-4">
+              {[
+                { name: "1. Baseline Assessment", pct: 100, active: false },
+                { name: "2. Neural Synchronization", pct: 100, active: false },
+                { name: "3. Anxiety Desensitization", pct: 65, active: true },
+                { name: "4. Alpha Retraining", pct: 0, active: false }
+              ].map((step, idx) => (
+                <div key={idx} className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px]">
+                    <span className="text-white/70">{step.name}</span>
+                    <span className={`font-semibold ${step.pct === 100 ? "text-primary" : step.active ? "text-accent" : "text-white/30"}`}>
+                      {step.pct === 100 ? "Completed (100%)" : step.pct > 0 ? `In Progress (${step.pct}%)` : "Pending (0%)"}
+                    </span>
+                  </div>
+                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                      custom={step.pct}
+                      variants={progressVariants}
+                      initial="hidden"
+                      animate={inView ? "visible" : "hidden"}
+                      className={`h-full ${step.pct === 100 ? "bg-primary" : "bg-accent"}`}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

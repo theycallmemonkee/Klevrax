@@ -67,7 +67,6 @@ const features = [
 
 export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [activeIdx, setActiveIdx] = useState(0);
 
   // Map to align with klevrax-vr/page.tsx selectedComp name fields
   const nameMap: Record<string, string> = {
@@ -86,32 +85,6 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
       feature: feat.feature,
       description: feat.description,
     });
-  };
-
-  const handleNext = () => {
-    const nextIdx = (activeIdx + 1) % features.length;
-    setActiveIdx(nextIdx);
-    handleSelect(features[nextIdx]);
-  };
-
-  const handlePrev = () => {
-    const prevIdx = (activeIdx - 1 + features.length) % features.length;
-    setActiveIdx(prevIdx);
-    handleSelect(features[prevIdx]);
-  };
-
-  const handleDragEnd = (event: any, info: any) => {
-    const swipeThreshold = 50;
-    if (info.offset.x < -swipeThreshold) {
-      handleNext();
-    } else if (info.offset.x > swipeThreshold) {
-      handlePrev();
-    }
-  };
-
-  const selectMobileIdx = (idx: number) => {
-    setActiveIdx(idx);
-    handleSelect(features[idx]);
   };
 
   return (
@@ -236,8 +209,6 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
             {/* Front Sensory Node Markers */}
             {features.map((feat) => {
               // Convert coord values to relative SVG coordinate space (1000x600 to 200x120)
-              // formula: cx = (coords.x - 300) / 400 * 100 + 50 ?
-              // Let's hardcode precise headset coordinates in 200x120 space
               let cx = 100;
               let cy = 60;
               if (feat.id === "lens") { cx = 55; cy = 48; }
@@ -315,85 +286,43 @@ export default function VrHeadset3D({ onComponentClick }: VrHeadset3DProps) {
 
       </div>
 
-      {/* 3. Mobile Swipeable Carousel (visible on viewports < lg) */}
-      <div className="lg:hidden w-full px-4 flex flex-col items-center mt-4 overflow-visible">
-        <div className="w-full max-w-sm relative">
-          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10 opacity-70 blur-xl pointer-events-none" />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIdx}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              onDragEnd={handleDragEnd}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="glass-card w-full p-8 rounded-3xl border border-accent/25 bg-accent-muted/10 shadow-lg shadow-accent/5 flex flex-col justify-between cursor-grab active:cursor-grabbing min-h-[290px] relative z-10"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-11 h-11 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/25 shadow-md">
-                    {features[activeIdx].icon}
-                  </div>
-                  <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-display">
-                    {activeIdx + 1} / {features.length}
-                  </span>
-                </div>
-
-                <div className="mb-3.5">
-                  <span className="text-[9px] font-bold text-accent/80 block uppercase tracking-wider mb-1">
-                    {features[activeIdx].feature}
-                  </span>
-                  <h4 className="text-lg font-bold font-display text-white">
-                    {features[activeIdx].title}
-                  </h4>
-                </div>
-
-                <p className="text-white/70 text-xs leading-relaxed font-normal">
-                  {features[activeIdx].description}
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3.5 border-t border-white/5 flex items-center justify-between text-[9px] text-white/45 tracking-wider uppercase font-display">
-                <span>Swipe to explore</span>
-                <span className="text-accent font-semibold">Interactive</span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Carousel Navigation Indicators */}
-        <div className="flex items-center gap-6 mt-6 relative z-10">
-          <button
-            onClick={handlePrev}
-            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 active:scale-90 transition-all cursor-pointer"
-            aria-label="Previous component"
+      {/* 3. Mobile Stacked Feature Cards (visible on viewports < lg) */}
+      <div className="lg:hidden w-full flex flex-col gap-6 mt-8 relative z-10 px-4">
+        {features.map((feat, idx) => (
+          <div
+            key={feat.id}
+            className="glass-card w-full p-6 sm:p-8 rounded-2xl border border-white/5 bg-[#120A27]/25 hover:border-accent/20 hover:shadow-[0_20px_40px_rgba(124,58,237,0.15)] transition-all duration-300 flex flex-col justify-between shadow-[0_0_15px_rgba(124,58,237,0.12)]"
           >
-            ←
-          </button>
-          
-          <div className="flex gap-2">
-            {features.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => selectMobileIdx(idx)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  activeIdx === idx ? "bg-accent w-4" : "bg-white/20 hover:bg-white/35"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent-muted/40 flex items-center justify-center border border-accent/20 shadow-md">
+                  {feat.icon}
+                </div>
+                <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-display">
+                  Feature {idx + 1}
+                </span>
+              </div>
+
+              <div className="mb-2">
+                <span className="text-[9px] font-bold text-accent/80 block uppercase tracking-wider mb-0.5">
+                  {feat.feature}
+                </span>
+                <h4 className="text-lg font-bold font-display text-white">
+                  {feat.title}
+                </h4>
+              </div>
+
+              <p className="text-white/60 text-xs leading-relaxed font-normal">
+                {feat.description}
+              </p>
+            </div>
+
+            <div className="mt-4 pt-3.5 border-t border-white/5 flex items-center justify-between text-[9px] text-white/45 tracking-wider uppercase font-display">
+              <span>Sensor Diagnostics</span>
+              <span className="text-accent font-semibold">Active</span>
+            </div>
           </div>
-
-          <button
-            onClick={handleNext}
-            className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 active:scale-90 transition-all cursor-pointer"
-            aria-label="Next component"
-          >
-            →
-          </button>
-        </div>
+        ))}
       </div>
     </div>
   );

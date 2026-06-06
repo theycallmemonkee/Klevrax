@@ -38,7 +38,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen pt-28 pb-12 lg:pt-32 lg:pb-12 flex items-center justify-center overflow-hidden z-[1]">
+    <section className="relative min-h-[auto] lg:min-h-screen pt-24 pb-12 lg:pt-32 lg:pb-12 flex flex-col justify-start lg:justify-center overflow-hidden z-[1]">
       {/* Background Soft Glows */}
       <div className="glow-orb glow-orb-primary w-[550px] h-[550px] top-[5%] left-[-15%] animate-drift" />
       <div className="glow-orb glow-orb-secondary w-[450px] h-[450px] bottom-[10%] right-[-10%] animate-drift-delayed" />
@@ -64,7 +64,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline with Mask-Reveal */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold leading-[1.12] tracking-tight mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold leading-[1.12] tracking-tight mb-6">
             <span className="relative block overflow-hidden pb-1 sm:pb-2">
               <motion.span
                 variants={lineVariants}
@@ -102,12 +102,13 @@ export default function Hero() {
           {/* Action Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center gap-4 sm:gap-6 -ml-4"
+            className="flex flex-col sm:flex-row items-center gap-4 w-full px-0 sm:px-0 sm:-ml-4"
           >
             <MagneticButton
               as={Link}
               href="/klevrax-vr"
-              className="px-8 py-3.5 rounded-full text-sm font-semibold text-white bg-primary hover:bg-[#6D28D9] shadow-lg shadow-primary/20 border border-primary/10"
+              fullWidth={true}
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full text-sm font-semibold text-white bg-primary hover:bg-[#6D28D9] shadow-lg shadow-primary/20 border border-primary/10 flex items-center justify-center text-center"
             >
               Explore VR
             </MagneticButton>
@@ -117,7 +118,8 @@ export default function Hero() {
               href="https://calendly.com/klevraxprivatelimited01/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3.5 rounded-full text-sm font-semibold text-white/90 border border-white/10 hover:border-accent/40 bg-white/5 hover:bg-white/10 inline-block"
+              fullWidth={true}
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full text-sm font-semibold text-white/90 border border-white/10 hover:border-accent/40 bg-white/5 hover:bg-white/10 flex items-center justify-center text-center"
             >
               Book Workshop
             </MagneticButton>

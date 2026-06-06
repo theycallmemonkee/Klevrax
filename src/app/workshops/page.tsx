@@ -105,8 +105,7 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
 }
 
 export default function WorkshopsPage() {
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const isTimelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
+
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -229,87 +228,44 @@ export default function WorkshopsPage() {
         </div>
       </section>
 
-      {/* Workshop Experience Timeline */}
-      <section className="py-24 bg-[#0F0820] relative">
+      {/* Workshop Experience Steps Grid */}
+      <section className="py-20 bg-[#0F0820] relative">
         <div className="glow-orb glow-orb-secondary w-[500px] h-[500px] top-[15%] right-[-10%] animate-drift" />
 
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-20">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-xs font-semibold text-accent tracking-wider uppercase font-display mb-3">
               Delivery Workflow
             </h2>
             <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-6">
               The Journey of a KlevraX Workshop
             </h3>
-            <p className="text-white/60 text-sm sm:text-base">
+            <p className="text-white/60 text-sm sm:text-base leading-relaxed">
               A clinical framework guarantees that our workshops generate structural value, emotional safe harbors, and actionable recovery pathways.
             </p>
           </div>
 
-          {/* Timeline */}
-          <div ref={timelineRef} className="relative max-w-4xl mx-auto">
-            {/* Center Line Connector (SVG with glowing progress trail) */}
-            <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 -translate-x-[1.5px] w-[3px]">
-              <div className="absolute inset-0 bg-white/5" />
-              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                <motion.line
-                  x1="50%"
-                  y1="0"
-                  x2="50%"
-                  y2="100%"
-                  stroke="url(#timeline-glow)"
-                  strokeWidth="3"
-                  initial={{ pathLength: 0 }}
-                  animate={isTimelineInView ? { pathLength: 1 } : {}}
-                  transition={{ duration: 2, ease: "easeInOut" }}
-                />
-                <defs>
-                  <linearGradient id="timeline-glow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#7C3AED" />
-                    <stop offset="50%" stopColor="#A78BFA" />
-                    <stop offset="100%" stopColor="#5B21B6" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-
-            <div className="space-y-12">
-              {timelineSteps.map((step, idx) => {
-                const isEven = idx % 2 === 0;
-
-                return (
-                  <div key={step.phase} className="flex flex-col md:flex-row items-start justify-between relative">
-                    {/* Node Dot with pulse and fade-in */}
-                    <motion.div
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={isTimelineInView ? { scale: 1, opacity: 1 } : {}}
-                      transition={{ duration: 0.5, delay: idx * 0.2 }}
-                      className="absolute left-[20px] md:left-1/2 -translate-x-1/2 flex items-center justify-center z-10"
-                    >
-                      <div className="w-10 h-10 rounded-full border border-accent bg-[#0F0820] flex items-center justify-center text-xs font-bold text-accent shadow-[0_0_15px_rgba(167,139,250,0.3)] relative">
-                        <span className="relative z-10">{step.phase}</span>
-                        <div className="absolute inset-0 rounded-full bg-accent/10 animate-ping pointer-events-none" />
-                      </div>
-                    </motion.div>
-
-                    <div className={`w-full md:w-[45%] ml-16 md:ml-0 ${isEven ? "md:text-right" : "md:text-left md:order-2"}`}>
-                      <motion.div
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={isTimelineInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.8, delay: idx * 0.15 }}
-                        className="glass-card p-5 sm:p-6 rounded-2xl border border-white/5 bg-[#120A27]/25"
-                      >
-                        <h4 className="text-lg font-semibold font-display text-white mb-2">{step.title}</h4>
-                        <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{step.description}</p>
-                      </motion.div>
-                    </div>
-
-                    {/* Empty spacer for side symmetry on desktop */}
-                    <div className="hidden md:block md:w-[45%]" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {timelineSteps.map((step) => (
+              <div
+                key={step.phase}
+                className="glass-card p-6 sm:p-8 rounded-2xl border border-white/5 bg-[#120A27]/20 hover:border-accent/30 shadow-[0_0_15px_rgba(124,58,237,0.12)] transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-3xl font-bold font-display text-accent-muted block">
+                      {step.phase}
+                    </span>
+                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-display">
+                      Phase
+                    </span>
                   </div>
-                );
-              })}
-            </div>
+
+                  <h4 className="text-lg font-semibold font-display text-white mb-3">{step.title}</h4>
+                  <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
         </div>

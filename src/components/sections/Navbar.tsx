@@ -112,14 +112,14 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 transition-all duration-500 py-4 ${
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 py-2 md:py-4 ${
         mobileOpen ? "z-[10000]" : "z-[9999]"
       } ${
         scrolled ? "px-4 lg:px-8" : "px-4 lg:px-12"
       }`}
     >
       <div
-        className={`max-w-7xl mx-auto flex items-center justify-between rounded-full py-2.5 px-6 transition-all duration-500 ${
+        className={`max-w-7xl mx-auto flex items-center justify-between rounded-full py-1.5 px-4 md:py-2.5 md:px-6 transition-all duration-500 ${
           scrolled || mobileOpen
             ? "glass-card border-white/10 bg-dark/70 shadow-[0_10px_30px_-10px_rgba(15,8,32,0.8)]"
             : "border-transparent bg-transparent"
@@ -127,7 +127,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Logo size={scrolled ? 32 : 36} />
+          <Logo size={scrolled ? 24 : 28} className="md:hidden" />
+          <Logo size={scrolled ? 32 : 36} className="hidden md:flex" />
         </Link>
 
         {/* Desktop Mega Menu */}
@@ -230,24 +231,24 @@ export default function Navbar() {
 
         {/* Mobile Hamburger toggle (morphing lines via motion) */}
         <button
-          className="lg:hidden w-10 h-10 rounded-full glass-card border-white/10 flex flex-col items-center justify-center gap-1.5 text-white cursor-pointer hover:bg-white/5 relative z-50 transition-all duration-300"
+          className="lg:hidden w-8 h-8 rounded-full glass-card border-white/10 flex flex-col items-center justify-center gap-1 text-white cursor-pointer hover:bg-white/5 relative z-50 transition-all duration-300"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle Navigation Menu"
         >
           <motion.span
-            animate={mobileOpen ? { rotate: 45, y: 7.5 } : { rotate: 0, y: 0 }}
+            animate={mobileOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-5 h-[1.5px] bg-white rounded-full block"
+            className="w-4 h-[1.5px] bg-white rounded-full block"
           />
           <motion.span
             animate={mobileOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="w-5 h-[1.5px] bg-white rounded-full block"
+            className="w-4 h-[1.5px] bg-white rounded-full block"
           />
           <motion.span
-            animate={mobileOpen ? { rotate: -45, y: -7.5 } : { rotate: 0, y: 0 }}
+            animate={mobileOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-5 h-[1.5px] bg-white rounded-full block"
+            className="w-4 h-[1.5px] bg-white rounded-full block"
           />
         </button>
       </div>
@@ -260,7 +261,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "100vh" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-0 z-40 bg-dark backdrop-blur-2xl lg:hidden flex flex-col pt-28 px-6 pb-8 border-b border-white/10 overflow-hidden"
+            className="fixed inset-x-0 top-0 z-40 bg-dark backdrop-blur-2xl lg:hidden flex flex-col pt-20 px-6 pb-8 border-b border-white/10 overflow-hidden"
           >
             <div className="flex-1 overflow-y-auto space-y-6 scrollbar-none pr-2 py-4">
               {navigationStructure.map((cat, idx) => {
