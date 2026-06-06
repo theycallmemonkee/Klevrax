@@ -40,36 +40,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# dependencies
-node_modules
-
-# next
-.next
-out
-
-# build
-build
-dist
-
-# env
-.env
-.env.local
-.env.production
-.env.development
-.env*.local
-
-# logs
-*.log
-
-# mac
-.DS_Store
-
-# ai files
-agent.md
-claude.md
+# AI/Agent configurations and files
 CLAUDE.md
-.cursor
-.claude
+AGENTS.md
+agent.md
+.claude/
+.cursor/
+.windsurf/
+.roo/
+prompts/
+ai-prompts/
+*.mdc
 
 # misc
 coverage
