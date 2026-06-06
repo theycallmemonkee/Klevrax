@@ -53,7 +53,7 @@ export default function CollegesPage() {
 
       <PageTransition>
         {/* Hero */}
-        <section className="relative py-20 overflow-hidden flex items-center justify-center min-h-[45vh]">
+        <section className="relative pt-8 pb-20 overflow-hidden flex items-center justify-center min-h-[45vh]">
           <div className="glow-orb glow-orb-primary w-[500px] h-[500px] bottom-[10%] right-[-10%]" />
           
           <div className="max-w-4xl mx-auto px-6 text-center relative z-10">

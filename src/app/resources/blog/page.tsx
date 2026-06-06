@@ -75,7 +75,7 @@ export default function BlogPage() {
 
       <PageTransition>
         {/* Hero */}
-        <section className="relative py-20 overflow-hidden flex items-center justify-center min-h-[40vh]">
+        <section className="relative pt-8 pb-20 overflow-hidden flex items-center justify-center min-h-[40vh]">
           <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
             <span className="text-xs font-semibold text-accent tracking-widest uppercase font-display block mb-4">
               Scientific Journals

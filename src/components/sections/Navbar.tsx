@@ -112,7 +112,9 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 py-4 ${
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 py-4 ${
+        mobileOpen ? "z-[10000]" : "z-[9999]"
+      } ${
         scrolled ? "px-4 lg:px-8" : "px-4 lg:px-12"
       }`}
     >
@@ -258,7 +260,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "100vh" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-0 z-40 bg-dark/92 backdrop-blur-2xl lg:hidden flex flex-col pt-28 px-6 pb-8 border-b border-white/10 overflow-hidden"
+            className="fixed inset-x-0 top-0 z-40 bg-dark backdrop-blur-2xl lg:hidden flex flex-col pt-28 px-6 pb-8 border-b border-white/10 overflow-hidden"
           >
             <div className="flex-1 overflow-y-auto space-y-6 scrollbar-none pr-2 py-4">
               {navigationStructure.map((cat, idx) => {

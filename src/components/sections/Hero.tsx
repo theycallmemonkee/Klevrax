@@ -38,7 +38,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen py-24 sm:py-32 lg:py-0 lg:h-screen lg:min-h-[700px] flex items-center justify-center overflow-hidden z-[1]">
+    <section className="relative min-h-screen pt-28 pb-12 lg:pt-32 lg:pb-12 flex items-center justify-center overflow-hidden z-[1]">
       {/* Background Soft Glows */}
       <div className="glow-orb glow-orb-primary w-[550px] h-[550px] top-[5%] left-[-15%] animate-drift" />
       <div className="glow-orb glow-orb-secondary w-[450px] h-[450px] bottom-[10%] right-[-10%] animate-drift-delayed" />

@@ -111,7 +111,7 @@ export default function VrPlatformPage() {
 
       <PageTransition>
         {/* Hero Section */}
-        <section className="relative pt-32 pb-12 overflow-hidden flex flex-col items-center text-center">
+        <section className="relative pt-8 pb-12 overflow-hidden flex flex-col items-center text-center">
           <div className="glow-orb glow-orb-primary w-[600px] h-[600px] top-[10%] left-[-15%] animate-drift" />
           
           <div className="max-w-4xl mx-auto px-6 relative z-10">
